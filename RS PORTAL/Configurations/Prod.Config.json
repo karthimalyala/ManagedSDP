@@ -1,0 +1,84 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/ConfigurationOverrides.json",
+  "Settings": {
+    "MonitorTimeInMinutes": "1440",
+    "MonitorAccountName": "AuxWeb",
+    "TargetContainer": "prodextension",
+    "SecretId": "https://recsvc-portalprod-ehs-kv.vault.azure.net/secrets/HostingServiceStorageConString",
+    "MonitorTenant": "AuxWeb",
+    "mySubscriptionKey": "123456",
+    "TenantID": "33e01921-4d64-4f8c-a055-5bdaffd5e33d"
+  },
+  "Geographies": [
+    {
+      "Name": "United States",
+      "Regions": [
+        {
+          "Name": "centralus",
+          "Settings": {
+            "StampCount": 1,
+            "stamp1":{
+            "azureResourceGroupName": "Stage1.portalhostingservice"
+            }
+          }
+        },
+        {
+          "Name": "eastus",
+          "Settings": {
+            "StampCount": 1,
+            "stamp1":{
+            "azureResourceGroupName": "Stage2.portalhostingservice"
+            }
+          }
+        },
+        {
+          "Name": "eastus2",
+          "Settings": {
+            "StampCount": 1,
+            "stamp1":{
+            "azureResourceGroupName": "Stage3.portalhostingservice"
+            }
+          }
+        },
+        {
+          "Name": "northcentralus",
+          "Settings": {
+            "StampCount": 1,
+            "stamp1":{
+            "azureResourceGroupName": "Stage4.portalhostingservice"
+            }
+          }
+        },
+        {
+          "Name": "global",
+          "Settings": {
+            "StampCount": 1,
+            "stamp1":{
+            "azureResourceGroupName": "Stage5.portalhostingservice"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Canary (US)",
+      "Regions": [
+        {
+          "Name": "centraluseuap",
+          "Settings": {
+            "StampCount": 3,
+            "stamp1":{
+              "azureResourceGroupName": "s1.portalhostingservice"
+            },
+            "stamp2":{
+              "azureResourceGroupName": "m1.portalhostingservice"
+            },
+            "stamp3":{
+              "azureResourceGroupName": "s1can1.portalhostingservice"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

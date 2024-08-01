@@ -1,0 +1,40 @@
+{
+    "$schema":	"https://ev2schema.azure.net/schemas/2020-01-01/ScopeBindings.json",
+    "contentVersion":"1.0.0.0",
+    "scopeBindings":[
+        {
+            "scopeTagName":"DeployPortalExtension",
+            "bindings":[
+                {
+                    "find":"__AzureResourceGroup__",
+                    "replaceWith":"$config(azureResourceGroupName)"
+                },
+                {
+                    "find":"__MonitorAccountName__",
+                    "replaceWith":"$config(MonitorAccountName)"
+                },
+                {
+                    "find":"__MonitorTimeInMinutes__",
+                    "replaceWith":"$config(MonitorTimeInMinutes)"
+                },
+                {
+                    "find":"__MonitorTenant__",
+                    "replaceWith":"$config(MonitorTenant)"
+                },
+                {
+                    "find":"__TargetContainer__",
+                    "replaceWith":"$config(TargetContainer)"
+                },
+                {
+                    "find":"__SecretID__",
+                    "replaceWith":"$config(SecretId)"
+                },
+                {
+                    "find":"__SubscriptionID__",
+                    "replaceWith":"$config(mySubscriptionKey)"
+                }
+            ]
+        }
+        
+    ]
+}

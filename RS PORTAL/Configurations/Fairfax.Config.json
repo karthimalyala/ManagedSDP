@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/ConfigurationOverrides.json",
+  "Settings": {
+    "MonitorTimeInMinutes": "1440",
+    "MonitorAccountName": "AuxWebFF",
+    "TargetContainer": "fairfaxextension",
+    "SecretId": "https://recsvc-portal-ff-ehs-kv1.vault.usgovcloudapi.net/secrets/HostingServiceStorageConString",
+    "MonitorTenant": "AuxWebFF",
+    "mySubscriptionKey": "123456"
+  },
+  "Geographies": [
+    {
+      "Name": "United States",
+      "Regions": [
+        {
+          "Name": "usgoveast",
+          "Settings": {
+            "azureResourceGroupName": "Stage1.portalhostingservice"
+          }
+        },
+        {
+          "Name": "usgovcentral",
+          "Settings": {
+            "azureResourceGroupName": "Stage2.portalhostingservice"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+    "name": "Microsoft.Azure.Backup.RecoveryServices-Prod",
+    "version": "0.0.10",
+    "stages": [
+      {
+        "sequence": 1,
+        "name": "Stage1",
+        "regions": ["centralus"] 
+      },
+      {
+        "sequence": 2,
+        "name": "PhaseTwo",
+        "regions": ["eastus"]
+      },
+      {
+        "sequence": 3,
+        "name": "PhaseThree",
+        "regions": ["eastus2"]
+      },
+      {
+        "sequence": 4,
+        "name": "PhaseFour",
+        "regions": ["northcentralus"]
+      },
+      {
+        "sequence": 5,
+        "name": "PhaseFive",
+        "regions": ["global"]
+      }
+    ]
+  }
+  

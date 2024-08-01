@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticServiceModel.json",
+  "contentVersion": "1.0.0.0",
+  "serviceMetadata": {
+    "serviceIdentifier": "fb10185a-465d-42cd-b339-7d0d9331c340",
+    "serviceGroup": "Microsoft.Azure.Backup.RecoveryServices",
+    "displayName": "Daily canary deployment run trigger schedule - 3:00 AM IST (UTC + 5:30)",
+    "environment": "Prod",
+    "tenantId": "$(TenantID)"
+  },
+  "serviceResourceGroupDefinitions": [
+    {
+      "name": "HostingService.DeployPortalExtension",
+      "azureResourceGroupName": "$config(stamp$stamp().azureResourceGroupName)",
+      "serviceResourceDefinitions": [
+        {
+          "name": "DeployPortalExtension.portalhostingservice",
+          "composedOf": {
+            "extension": {
+              "rolloutParametersPath": "Parameters\\RolloutParameters.json"
+            }
+          },
+          "scopeTags": [
+            {
+              "name": "DeployPortalExtension"
+            }
+          ]
+        }
+      ],
+      "subscriptionKey": "$config(mySubscriptionKey)"
+    }
+  ]
+}

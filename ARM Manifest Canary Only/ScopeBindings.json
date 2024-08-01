@@ -1,0 +1,19 @@
+{
+    "$schema":	"https://ev2schema.azure.net/schemas/2020-01-01/ScopeBindings.json",
+    "contentVersion":"1.0.0.0",
+    "scopeBindings": [
+        {
+          "scopeTagName": "ArmManifestUpdate",
+          "bindings": [
+            {
+              "find": "__CANARY_REGION__",
+              "replaceWith": "$(CanaryRegion)"
+            },
+            {
+              "find": "__HAS_NEW_RESOURCETYPE__",
+              "replaceWith": "$(HasNewResourceType)"
+            }
+          ]
+        }
+      ]
+}

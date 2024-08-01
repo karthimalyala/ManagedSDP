@@ -1,0 +1,91 @@
+{
+  "$schema":	"https://ev2schema.azure.net/schemas/2020-01-01/ScopeBindings.json",
+  "contentVersion":"1.0.0.0",
+    "scopeBindings": [
+      {
+        "scopeTagName": "AfecRollout",
+        "bindings": [
+          {
+            "find": "__ACIS_ENDPOINT__",
+            "replaceWith": "$(AcisEndpoint)"
+          },
+          {
+            "find": "__KEYVAULT_SECRET_ID__",
+            "replaceWith": "$(KeyVaultSecretId)"
+          },
+          {
+            "find": "__RESOURCE_PROVIDER_NAMESPACE__",
+            "replaceWith": "$(ResourceProviderNamespace)"
+          },
+          {
+            "find": "__FEATURE_NAME__",
+            "replaceWith": "$(FeatureName)"
+          },
+          {
+            "find": "__FEATURE_DESCRIPTION__",
+            "replaceWith": "$(FeatureDescription)"
+          },
+          {
+            "find": "__FEATURE_NOTES__",
+            "replaceWith": "$(FeatureNotes)"
+          },
+          {
+            "find": "__FEATURE_SCOPE__",
+            "replaceWith": "$(FeatureScope)"
+          },
+          {
+            "find": "__SIGNUP_START_DATE__",
+            "replaceWith": "$(SignupStartDate)"
+          },
+          {
+            "find": "__SIGNUP_END_DATE__",
+            "replaceWith": "$(SignupEndDate)"
+          },
+          {
+            "find": "__ENROLLMENT_TYPE__",
+            "replaceWith": "$(EnrollmentType)"
+          },
+          {
+            "find": "__MAXIMUM_ENROLLMENT__",
+            "replaceWith": "$(MaxEnrollment)"
+          },
+          {
+            "find": "__OWNER_EMAILS__",
+            "replaceWith": "$(OwnerEmailList)"
+          },
+          {
+            "find": "__FEATURE_REQUIRED_CLAIMS__",
+            "replaceWith": "$(FeatureRequiredClaims)"
+          },
+          {
+            "find": "__FEATURE_OWNERS__",
+            "replaceWith": "$(FeatureOwners)"
+          },
+          {
+            "find": "__FEATURE_DOCUMENTATION_LINK__",
+            "replaceWith": "$(FeatureDocumentationLink)"
+          },
+          {
+            "find": "__WHITELIST_TENANT_IDS__",
+            "replaceWith": "$(WhitelistTenantIds)"
+          },
+          {
+            "find": "__SHOULD_FEATURE_DISPLAY_IN_PORTAL__",
+            "replaceWith": "$(ShouldFeatureDisplayInPortal)"
+          },
+          {
+            "find": "__SUBSCRIPTION_ID__",
+            "replaceWith": "$(SubscriptionId)"
+          },
+          {
+            "find": "__MANIFEST_REGION__",
+            "replaceWith": "$(ManifestRegion)"
+          },
+          {
+            "find": "__FEATURE_UNREGISTRATION_REQUIRES_APPROVAL__",
+            "replaceWith": "$(FeatureUnregistrationRequiresApproval)"
+          }
+        ]
+      }
+    ]
+}

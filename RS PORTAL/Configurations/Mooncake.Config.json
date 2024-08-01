@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/ConfigurationOverrides.json",
+  "Settings": {
+    "MonitorTimeInMinutes": "1440",
+    "MonitorAccountName": "AuxWebMC",
+    "TargetContainer": "mooncakeextension",
+    "SecretId": "https://recsvc-portal-mc-ehs-kv1.vault.azure.cn/secrets/HostingServiceStorageConString",
+    "MonitorTenant": "AuxWebMC",
+    "mySubscriptionKey": "123456"
+  },
+  "Geographies": [
+    {
+      "Name": "China",
+      "Regions": [
+        {
+          "Name": "chinaeast",
+          "Settings": {
+            "azureResourceGroupName": "Stage1.portalhostingservice"
+          }
+        },
+        {
+          "Name": "chinanorth",
+          "Settings": {
+            "azureResourceGroupName": "Stage2.portalhostingservice"
+          }
+        }
+      ]
+    }
+  ]
+}

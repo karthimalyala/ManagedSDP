@@ -1,0 +1,120 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/RolloutParameters.json",
+    "contentVersion": "1.0.0.0",
+    "wait": [
+        {
+            "name": "wait10Minutes",
+            "properties": {
+                "duration": "PT10M"
+            }
+        }
+    ],
+    "extensions": [
+        {
+            "name": "checkinmanifestcanary",
+            "type": "Microsoft.Geneva.Actions/OperationExecution",
+            "version": "2016-11-01",
+            "connectionProperties": {
+                "endpoint": "https://acis.engineering.core.windows.net/api/v2/ev2",
+                "maxExecutionTime": "PT24H",
+                "authentication": {
+                    "type": "DstsServiceClientCertificateAuthentication",
+                    "reference": {
+                        "provider": "AzureKeyVault",
+                        "parameters": {
+                            "secretId": "https://ev2authentication.vault.azure.net/secrets/ev2authentication"
+                        }
+                    },
+                    "properties": {
+                        "IdentificationType": "SubjectName"
+                    }
+                }
+            },
+            "payloadProperties": {
+                "ga-extension-name": {
+                    "value": "Azure Resource Manager"
+                },
+                "ga-endpoint": {
+                    "value": "Azure Resource Manager"
+                },
+                "ga-operation-id": {
+                    "value": "CheckInResourceProviderManifestSelfService"
+                },
+                "resourceprovidernamespace": {
+                     "value": "Microsoft.RecoveryServices"
+                },
+                "environment": {
+                    "value": "Canary"
+                },
+                "resourceprovidermanifest": {
+                    "reference": {
+                        "path": "manifest.json"
+                    },
+                    "type": "SasUri"
+                },
+                "resourceprovidermanifestservicetreevalidation": {
+                    "value": "false"
+                },
+                "swaggeruri": {
+                    "value": ""
+                }
+            }
+        },
+        {
+            "name": "putsingleregionmanifestcanary",
+            "type": "Microsoft.Geneva.Actions/OperationExecution",
+            "version": "2016-11-01",
+            "connectionProperties": {
+                "endpoint": "https://acis.engineering.core.windows.net/api/v2/ev2",
+                "maxExecutionTime": "PT24H",
+                "authentication": {
+                    "type": "DstsServiceClientCertificateAuthentication",
+                    "reference": {
+                        "provider": "AzureKeyVault",
+                        "parameters": {
+                            "secretId": "https://ev2authentication.vault.azure.net/secrets/ev2authentication"
+                        }
+                    },
+                    "properties": {
+                        "IdentificationType": "SubjectName"
+                    }
+                }
+            },
+            "payloadProperties": {
+                "ga-extension-name": {
+                    "value": "Azure Resource Manager"
+                },
+                "ga-endpoint": {
+                    "value": "Azure Resource Manager"
+                },
+                "ga-operation-id": {
+                    "value": "PutResourceProviderRegionalManifestSelfService"
+                },
+                "resourceprovidernamespace": {
+                    "value": "Microsoft.RecoveryServices"
+                },
+                "resourceprovidermanifest": {
+                    "reference": {
+                        "path": "manifest.json"
+                    },
+                    "type": "SasUri"
+                },
+                "locationname": {
+                    "value": "__CANARY_REGION__"
+                },
+                "environment": {
+                    "value": "Canary"
+                },
+                "resourceprovidermanifestvalidation": {
+                    "value": "false"
+                },
+                "resourceprovidermanifestaddnewresourcetype": {
+                    "value": "__HAS_NEW_RESOURCETYPE__"
+                },
+                "resourceprovidermanifestallowoverridesdp": {
+                    "value": "false"
+                }
+            }
+        }
+    ]
+}

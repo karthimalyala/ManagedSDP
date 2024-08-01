@@ -1,0 +1,227 @@
+trigger: none
+
+schedules: #https://docs.microsoft.com/en-us/azure/devops/pipelines/process/scheduled-triggers?tabs=yaml&view=azure-devops
+  - cron: "30 21 * * *"
+    displayName: Daily canary deployment run trigger schedule - 3:00 AM IST (UTC + 5:30)
+    branches:
+      include:
+        - asr1
+    always: true
+
+parameters:
+  - name: "BranchName"
+    displayName: "Repo branch name"
+    type: string
+    default: "asr1"
+    values:
+      - asr1
+      - mab1
+      - dev1
+      - asr2
+      - release
+      - master
+
+  - name: "StampName"
+    displayName: "Stamp name to deploy builds."
+    type: string
+    default: SetFriendlyName.s1
+    values:
+      - SetFriendlyName.s1
+      - SetFriendlyName.s1can1
+      - SetFriendlyName.m1
+      - P1D
+      - PT6H
+      - PT30M
+
+  - name: "Environment"
+    displayName: "Environment to use"
+    type: string
+    default: Production
+    values:
+      - Production
+      - Fairfax
+      - Mooncake
+
+variables:
+  - name: FYIPossibleCanaryRolloutSpecNames
+    value: SetFriendlyName.s1, SetFriendlyName.s1can1, SetFriendlyName.asrperftest, SetFriendlyName.azcanary, SetFriendlyName.asrhotfix
+  - name: FYIPossiblePRODRolloutSpecNames
+    value: PT6H, P1D, PT30M
+  - name: MonitorTimeInMinutes
+    ${{ if eq(parameters.StampName, 'P1D') }}:
+      value: "1440"
+    ${{ if eq(parameters.StampName, 'PT6H') }}:
+      value: "360"
+    ${{ if eq(parameters.StampName, 'PT30M') }}:
+      value: "30"
+    ${{ if or(eq(parameters.StampName, 'SetFriendlyName.s1'), eq(parameters.StampName, 'SetFriendlyName.s1can1'), eq(parameters.StampName, 'SetFriendlyName.m1')) }}:
+      value: "30"
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: OneBranch.Pipelines/GovernedTemplates
+      ref: refs/heads/main
+  pipelines:
+    - pipeline: _Mgmt-RecoverySvcs-Portal-Official
+      trigger: none
+      branch: ${{parameters.BranchName}}
+      source: Mgmt-RecoverySvcs-Portal-Official
+      project: One
+extends:
+  template: v2/OneBranch.Official.CrossPlat.yml@templates
+  parameters:
+    stages:
+      - ${{ if eq(parameters.Environment, 'Production') }}:
+          - stage: Prod__EHS_${{parameters.BranchName}}_Prod_environment
+            displayName: "Prod: EHS ${{parameters.BranchName}} ${{parameters.Environment}} environment"
+            variables:
+              - name: ob_release_environment
+                value: ${{parameters.Environment}}
+              - name: ob_release_usedeploymentjob
+                value: true
+              - name: ob_deploymentjob_environment
+                value: EHS ${{parameters.BranchName}} ${{parameters.Environment}} environment
+              - name: RolloutSpecName
+                value: ${{parameters.StampName}}
+            dependsOn: []
+            jobs:
+              - job: agent_phase
+                displayName: Agent phase
+                pool:
+                  type: release
+                steps:
+                  - download: _Mgmt-RecoverySvcs-Portal-Official
+                  - task: vsrm-ev2.vss-services-ev2.adm-release-task.ExpressV2Internal@1
+                    inputs:
+                      UseServerMonitorTask: true
+                      EnableStrictValidation: false
+                      ValidateOnly: false
+                      EndpointProviderType: ApprovalService
+                      ServiceRootLocation: LinkedArtifact
+                      RolloutSpecType: RSPath
+                      ServiceRootPath: $(Pipeline.Workspace)/_Mgmt-RecoverySvcs-Portal-official/drop_build_retail_amd64/release-amd64/ManagedSDP/ServiceGroupRoot
+                      RolloutSpecPath: $(Pipeline.Workspace)/_Mgmt-RecoverySvcs-Portal-official/drop_build_retail_amd64/release-amd64/ManagedSDP/ServiceGroupRoot/RolloutSpec.json
+                      ApprovalServiceEnvironment: ${{parameters.Environment}}
+                      ${{ if or(eq(parameters.StampName, 'P1D'), eq(parameters.StampName, 'PT6H'), eq(parameters.StampName, 'PT30M')) }}:
+                        Select: 
+                          |
+                          regions(centralus,eastus,eastus2,northcentralus)
+                          regions(global).steps(DeployPortalExtension).stamp(1).actions(Extension/recoveryservices)
+                      ${{ if eq(parameters.StampName, 'SetFriendlyName.s1') }}:
+                        Select: regions(centraluseuap).steps(DeployPortalExtension).stamp(1).actions(Extension/recoveryservices)
+                      ${{ if eq(parameters.StampName, 'SetFriendlyName.s1can1') }}:
+                        Select: regions(centraluseuap).steps(DeployPortalExtension).stamp(1).actions(Extension/recoveryservices)
+                      ${{ if eq(parameters.StampName, 'SetFriendlyName.m1')) }}:
+                        Select: regions(centraluseuap).steps(DeployPortalExtension).stamp(1).actions(Extension/recoveryservices)
+                      ConfigurationOverrides: |
+                          {
+                            "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/ConfigurationOverrides.json",
+                            "ConfigurationSpecification": {
+                              "Settings": {
+                                "MonitorTimeInMinutes": "$(MonitorTimeInMinutes)"
+                              }
+                            }
+                          }
+                    
+
+      - ${{ if eq(parameters.Environment, 'Fairfax') }}:
+          - stage: FF__EHS_${{parameters.BranchName}}_FF_environment
+            displayName: "Prod: EHS ${{parameters.BranchName}} ${{parameters.Environment}} environment"
+            variables:
+              - name: ob_release_environment
+                value: ${{parameters.Environment}}
+              - name: ob_release_usedeploymentjob
+                value: true
+              - name: ob_deploymentjob_environment
+                value: EHS ${{parameters.BranchName}} ${{parameters.Environment}} environment
+              - name: RolloutSpecName
+                value: ${{parameters.StampName}}           
+            dependsOn: []
+            jobs:
+              - job: agent_phase
+                displayName: Agent phase
+                pool:
+                  type: release
+                steps:
+                  - download: _Mgmt-RecoverySvcs-Portal-Official
+                  - task: vsrm-ev2.vss-services-ev2.adm-release-task.ExpressV2Internal@1
+                    inputs:
+                      UseServerMonitorTask: true
+                      EnableStrictValidation: false
+                      ValidateOnly: false
+                      EndpointProviderType: ApprovalService
+                      ServiceRootLocation: LinkedArtifact
+                      RolloutSpecType: RSPath
+                      ServiceRootPath: $(Pipeline.Workspace)/_Mgmt-RecoverySvcs-Portal-official/drop_build_retail_amd64/release-amd64/ManagedSDP/ServiceGroupRoot
+                      RolloutSpecPath: $(Pipeline.Workspace)/_Mgmt-RecoverySvcs-Portal-official/drop_build_retail_amd64/release-amd64/ManagedSDP/ServiceGroupRoot/RolloutSpec.json
+                      ApprovalServiceEnvironment: ${{parameters.Environment}}
+                      ${{ if or(eq(parameters.StampName, 'P1D'), eq(parameters.StampName, 'PT6H'), eq(parameters.StampName, 'PT30M')) }}:
+                        Select: 
+                          |
+                          regions(usgoveast).steps(Stage1)
+                          regions(usgovcentral).steps(Stage1)
+                      ${{ if or(eq(parameters.StampName, 'SetFriendlyName.s1'), eq(parameters.StampName, 'SetFriendlyName.s1can1'), eq(parameters.StampName, 'SetFriendlyName.m1')) }}:
+                        Select:
+                          |
+                          regions(centraluseuap).steps(s1)
+                      ConfigurationOverrides: |
+                            {
+                              "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/ConfigurationOverrides.json",
+                              "ConfigurationSpecification": {
+                                "Settings": {
+                                  "MonitorTimeInMinutes": "$(MonitorTimeInMinutes)"
+                                }
+                              }
+                            }
+
+      - ${{ if eq(parameters.Environment, 'Moncake') }}:
+          - stage: MC__EHS_${{parameters.BranchName}}_MC_environment
+            displayName: "Prod: EHS ${{parameters.BranchName}} ${{parameters.Environment}} environment"
+            variables:
+              - name: ob_release_environment
+                value: ${{parameters.Environment}}
+              - name: ob_release_usedeploymentjob
+                value: true
+              - name: ob_deploymentjob_environment
+                value: EHS ${{parameters.BranchName}} ${{parameters.Environment}} environment
+              - name: RolloutSpecName
+                value: ${{parameters.StampName}} 
+            dependsOn: []
+            jobs:
+              - job: agent_phase
+                displayName: Agent phase
+                pool:
+                  type: release
+                steps:
+                  - download: _Mgmt-RecoverySvcs-Portal-Official
+                  - task: vsrm-ev2.vss-services-ev2.adm-release-task.ExpressV2Internal@1
+                    inputs:
+                      UseServerMonitorTask: true
+                      EnableStrictValidation: false
+                      ValidateOnly: false
+                      EndpointProviderType: ApprovalService
+                      ServiceRootLocation: LinkedArtifact
+                      RolloutSpecType: RSPath
+                      ServiceRootPath: $(Pipeline.Workspace)/_Mgmt-RecoverySvcs-Portal-official/drop_build_retail_amd64/release-amd64/ManagedSDP/ServiceGroupRoot
+                      RolloutSpecPath: $(Pipeline.Workspace)/_Mgmt-RecoverySvcs-Portal-official/drop_build_retail_amd64/release-amd64/ManagedSDP/ServiceGroupRoot/RolloutSpec.json
+                      ApprovalServiceEnvironment: ${{parameters.Environment}}
+                      ${{ if or(eq(parameters.StampName, 'P1D'), eq(parameters.StampName, 'PT6H'), eq(parameters.StampName, 'PT30M')) }}:
+                        Select: 
+                          |
+                          regions(chinaeast).steps(Stage1)
+                          regions(chinanorth).steps(Stage2)
+                      ${{ if or(eq(parameters.StampName, 'SetFriendlyName.s1'), eq(parameters.StampName, 'SetFriendlyName.s1can1'), eq(parameters.StampName, 'SetFriendlyName.m1')) }}:
+                        Select:
+                          |
+                          regions(centraluseuap).steps(s1)
+                      ConfigurationOverrides: |
+                            {
+                              "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/ConfigurationOverrides.json",
+                              "ConfigurationSpecification": {
+                                "Settings": {
+                                  "MonitorTimeInMinutes": "$(MonitorTimeInMinutes)"
+                                }
+                              }
+                            }

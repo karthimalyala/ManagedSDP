@@ -1,0 +1,40 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticServiceModel.json",
+    "contentVersion": "1.0.0.0",
+    "serviceMetadata": {
+        "serviceIdentifier": "fb10185a-465d-42cd-b339-7d0d9331c340",
+        "serviceGroup": "Microsoft.Azure.Backup.RecoveryServices",
+        "displayName": "MAB.AfecRollout",
+        "environment": "Prod",
+         "TenantId": "33e01921-4d64-4f8c-a055-5bdaffd5e33d"
+        
+    },
+    "serviceResourceGroupDefinitions": [
+      {
+        "name": "UnregisterAFEC",
+        "serviceResourceDefinitions": [
+          {
+            "name": "unregisterFeature",
+            
+            "composedOf":
+          {
+            "extension":
+            {
+			 "rolloutParametersPath": "Parameters\\AfecRolloutParameters.json"
+              
+            }
+          },
+          "scopeTags": [
+            {
+              "name": "AfecRollout"
+            }
+          ]
+          }
+        ],
+        "subscriptionKey": "$location()-OBS-PROD-DCOPY-1",
+        "azureResourceGroupName": "defaultRG3"
+      
+      }
+    ]
+}
+

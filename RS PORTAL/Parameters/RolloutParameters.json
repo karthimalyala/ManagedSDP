@@ -1,0 +1,56 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/rolloutParameters.json",
+    "contentVersion": "1.0.0.0",
+    "mdmHealthChecks": [
+      {
+        "name": "HealthCheck",
+        "monitoringAccountName": "__MonitorAccountName__",
+        "mdmGlobalHealthEndPoint": "https://prod8.prod.microsoftmetrics.com:1886/RecoveryService",
+        "waitBeforeMonitorTimeInMinutes": "1",
+        "monitorTimeInMinutes": "__MonitorTimeInMinutes__",
+        "healthResources": [
+          {
+            "name": "EHSExtension",
+            "resourceType": "EHSExtension",
+            "dimensions": {
+              "Monitor.Tenant": "__MonitorTenant__"
+            }
+          }
+        ]
+      }
+    ],
+    "Extensions": [
+      {
+        "Name": "recoveryservices",
+        "Type": "Microsoft.Azure.Portal.HostingService/DeployPortalExtension",
+        "Version": "2017-07-01",
+        "ConnectionProperties": {
+          "MaxExecutionTime": "PT1H",
+          "Authentication": {
+            "Type": "SystemCertificateAuthentication"
+          }
+        },
+        "PayloadProperties": {
+          "sourceExtensionZip": {
+            "Reference": {
+              "Path": "HostingSvc\\3.40.2407.191.zip"
+            }
+          },
+          "targetContainer": {
+            "Value": "__TargetContainer__"
+          },
+          "storageAccountCredentialsType": {
+            "Value": "ConnectionString"
+          },
+          "targetAccountCredentials": {
+            "Reference": {
+              "Provider": "AzureKeyVault",
+              "Parameters": {
+                "SecretId": "__SecretID__"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }

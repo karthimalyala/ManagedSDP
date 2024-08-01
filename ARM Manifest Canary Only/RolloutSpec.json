@@ -1,0 +1,45 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticRolloutSpecification.json",
+    "contentVersion":"1.0.0.0",
+    "rolloutMetadata":{
+        "serviceModelPath":"ServiceModel.json",
+        "scopeBindingsPath": "ScopeBindings.json",
+        "configuration": {
+            "serviceScope": {
+                "specPath": "Configurations\\$rolloutInfra().Config.json"
+            }
+        },
+        "name":"Microsoft.Azure.RecoveryServices.ARMManifest",
+        "rolloutType":"Major",
+        "buildSource":{
+            "parameters":{
+                "versionFile":"ProcessVersion.txt"
+            }
+        },
+        "notification": {
+            "email": {
+                "to": "mabcoredev@microsoft.com"
+            }
+        }
+    },
+    "orchestratedSteps":[
+        {
+            "name": "canarymanifestcheckin",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "ArmManifestUpdate",
+            "actions": [
+              "Extension/checkinmanifestcanary"
+            ]
+          },
+          {
+            "name": "canarymanifestputsingleregion",
+            "targetType": "ServiceResourceDefinition",
+            "targetName": "ArmManifestUpdate",
+            "actions": [
+              "wait/wait10Minutes",
+              "Extension/putsingleregionmanifestcanary"
+            ],
+            "dependsOn": [ "canarymanifestcheckin" ]
+          }
+    ]
+}

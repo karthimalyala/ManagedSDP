@@ -1,0 +1,8 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/ConfigurationSpecification.json",
+    "contentVersion":"1.0.0.0",
+    "settings":{
+        "TenantId":"33e01921-4d64-4f8c-a055-5bdaffd5e33d",
+        "mySubscriptionKey":"123"
+    }
+}

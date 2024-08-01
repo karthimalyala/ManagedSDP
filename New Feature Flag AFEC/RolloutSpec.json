@@ -1,0 +1,38 @@
+{
+    "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticRolloutSpecification.json",
+    "contentVersion":"1.0.0.0",
+    "rolloutMetadata":{
+        "serviceModelPath":"ServiceModel.json",
+        "scopeBindingsPath": "ScopeBindings.json",
+        "configuration": {
+            "serviceScope": {
+                "specPath": "Configurations\\$rolloutInfra().Config.json"
+            }
+        },
+        "name":"MktPlace 1.0.0.0",
+        "rolloutType":"Major",
+        "buildSource":{
+            "parameters":{
+                "versionFile":"BuildVer.txt"
+            }
+        },
+
+        "notification": {
+            "email": {
+                "to": "reclse@microsoft.com",
+                "cc": "bcdrcdvt@microsoft.com"
+            }
+        }
+    },
+    
+    "orchestratedSteps":[
+        {
+            "name":"AFEC_Rollout_Unregister",
+            "targetType":"ServiceResourceDefinition",
+            "targetName":"unregisterfeature",
+            "actions":[
+                "Extension/unregisterAFEC"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,174 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/RolloutParameters.json",
+  "contentVersion": "1.0.0.0",
+  "extensions": [
+    {
+      "name": "createAFEC",
+      "type": "Microsoft.Geneva.Actions/OperationExecution",
+      "version": "2016-11-01",
+      "connectionProperties": {
+        "endpoint": "__ACIS_ENDPOINT__",
+        "maxExecutionTime": "PT24H",
+        "authentication": {
+          "type": "DstsServiceClientCertificateAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__KEYVAULT_SECRET_ID__"
+            }
+          },
+          "properties": {
+            "identificationType": "SubjectName"
+          }
+        }
+      },
+      "payloadProperties": {
+        "ga-extension-name": {
+          "value": "Azure Resource Manager"
+        },
+        "ga-endpoint": {
+          "value": "Feature"
+        },
+        "ga-operation-id": {
+          "value": "CreateFeature"
+        },
+        "resourceprovidernamespace": {
+          "value": "__RESOURCE_PROVIDER_NAMESPACE__"
+        },
+        "featurename": {
+          "value": "__FEATURE_NAME__"
+        },
+        "featuredisplayname": {
+          "value": "__FEATURE_NAME__"
+        },
+        "featuredescription": {
+          "value": "__FEATURE_DESCRIPTION__"
+        },
+        "manifestregion": {
+          "value": "__MANIFEST_REGION__"
+        },
+        "featureunregistrationrequiresapproval": {
+          "value": "__FEATURE_UNREGISTRATION_REQUIRES_APPROVAL__"
+        },
+        "featurescope": {
+          "value": "__FEATURE_SCOPE__"
+        },
+        "featurenotes": {
+          "value": "__FEATURE_NOTES__"
+        },
+        "signupstartdate": {
+          "value": "__SIGNUP_START_DATE__"
+        },
+        "signupenddateparameter": {
+          "value": "__SIGNUP_END_DATE__"
+        },
+        "enrollmenttype": {
+          "value": "__ENROLLMENT_TYPE__"
+        },
+        "maximumenrollment": {
+          "value": "__MAXIMUM_ENROLLMENT__"
+        },
+        "owneremails": {
+          "value": "__OWNER_EMAILS__"
+        },
+        "featurerequiredclaims": {
+          "value": "__FEATURE_REQUIRED_CLAIMS__"
+        },
+        "featureowners": {
+          "value": "__FEATURE_OWNERS__"
+        },
+        "featuredocumentationlink": {
+          "value": "__FEATURE_DOCUMENTATION_LINK__"
+        },
+        "whitelisttenantids": {
+          "value": "__WHITELIST_TENANT_IDS__"
+        },
+        "shouldfeaturedisplayinportal": {
+          "value": "__SHOULD_FEATURE_DISPLAY_IN_PORTAL__"
+        }
+      }
+    },
+    {
+      "name": "registerAFEC",
+      "type": "Microsoft.Geneva.Actions/OperationExecution",
+      "version": "2016-11-01",
+      "connectionProperties": {
+        "endpoint": "__ACIS_ENDPOINT__",
+        "maxExecutionTime": "PT1H",
+        "authentication": {
+          "type": "DstsServiceClientCertificateAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__KEYVAULT_SECRET_ID__"
+            }
+          },
+          "properties": {
+            "identificationType": "SubjectName"
+          }
+        }
+      },
+      "payloadProperties": {
+        "ga-extension-name": {
+          "value": "Azure Resource Manager"
+        },
+        "ga-endpoint": {
+          "value": "Feature"
+        },
+        "ga-operation-id": {
+          "value": "ApproveFeatureRegistration"
+        },
+        "resourceprovidernamespace": {
+          "value": "__RESOURCE_PROVIDER_NAMESPACE__"
+        },
+        "featurename": {
+          "value": "__FEATURE_NAME__"
+        },
+        "wellknownsubscriptionid": {
+          "value": "__SUBSCRIPTION_ID__"
+        }
+      }
+    },
+    {
+      "name": "unregisterAFEC",
+      "type": "Microsoft.Geneva.Actions/OperationExecution",
+      "version": "2016-11-01",
+      "connectionProperties": {
+        "endpoint": "__ACIS_ENDPOINT__",
+        "maxExecutionTime": "PT24H",
+        "authentication": {
+          "type": "DstsServiceClientCertificateAuthentication",
+          "reference": {
+            "provider": "AzureKeyVault",
+            "parameters": {
+              "secretId": "__KEYVAULT_SECRET_ID__"
+            }
+          },
+          "properties": {
+            "identificationType": "SubjectName"
+          }
+        }
+      },
+      "payloadProperties": {
+        "ga-extension-name": {
+          "value": "Azure Resource Manager"
+        },
+        "ga-endpoint": {
+          "value": "Feature"
+        },
+        "ga-operation-id": {
+          "value": "RejectFeatureRegistration"
+        },
+        "resourceprovidernamespace": {
+          "value": "__RESOURCE_PROVIDER_NAMESPACE__"
+        },
+        "featurename": {
+          "value": "__FEATURE_NAME__"
+        },
+        "wellknownsubscriptionid": {
+          "value": "__SUBSCRIPTION_ID__"
+        }
+      }
+    }
+  ]
+}

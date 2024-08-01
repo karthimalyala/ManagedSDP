@@ -1,0 +1,33 @@
+{
+    "$schema":	"https://ev2schema.azure.net/schemas/2020-01-01/ScopeBindings.json",
+    "contentVersion":"1.0.0.0",
+    "scopeBindings":[
+
+        {
+            "scopeTagName":"AfecRollout",
+            "bindings":[
+                {
+                    "find": "__ACIS_ENDPOINT__",
+                    "replaceWith": "$(AcisEndpoint)"
+                  },
+                  {
+                    "find": "__KEYVAULT_SECRET_ID__",
+                    "replaceWith": "$(KeyVaultSecretId)"
+                  },
+                  {
+                    "find": "__RESOURCE_PROVIDER_NAMESPACE__",
+                    "replaceWith": "$(ResourceProviderNamespace)"
+                  },
+                  {
+                    "find": "__FEATURE_NAME__",
+                    "replaceWith": "$(FeatureName)"
+                  },
+                  {
+                    "find": "__SUBSCRIPTION_ID__",
+                    "replaceWith": "$(PublicAzureSubscriptionId)"
+                  }
+            ]
+        }
+        
+    ]
+}

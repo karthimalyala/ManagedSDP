@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-04-01/RegionAgnosticRolloutSpecification.json",
+  "contentVersion": "1.0.0.0",
+  "rolloutMetadata": {
+    "serviceModelPath": "ServiceModel.json",
+    "scopeBindingsPath": "ScopeBindings.json",
+    "name": "Microsoft_Azure_RecoveryServices 3.40.2407.191",
+    "rolloutType": "Major",
+    "configuration": {
+      "serviceScope": {
+        "specPath": "Configurations\\$rolloutInfra().Config.json"
+      }
+    },
+    "buildSource": {
+      "parameters": {
+        "versionFile": "buildver.txt"
+      }
+    },
+    "notification": {
+      "email": {
+        "to": "recsvcinfra@microsoft.com",
+        "cc": "recsvcinfra@microsoft.com"
+      }
+    }
+  },
+  "orchestratedSteps": [
+    {
+      "name": "DeployPortalExtension",
+      "targetType": "serviceResourceDefinition",
+      "targetName": "DeployPortalExtension.portalhostingservice",
+      "actions": ["Extension/recoveryservices", "MdmHealthCheck/HealthCheck"]
+    }
+  ]
+}
